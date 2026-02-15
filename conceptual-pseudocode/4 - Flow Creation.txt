@@ -1,0 +1,28 @@
+FUNCTION CreateNewFlow(flowKey, packet) RETURNS FlowNode
+
+    DECLARE node AS FlowNode
+
+    // Assign the flowkey identifier
+    node.flowKey = flowKey
+
+    // Initialize traffic statistics
+    node.packetCount = 1
+    node.byteCount = packet.size
+
+    // Record time information
+    node.startTime = CURRENT_TIME
+    node.lastSeenTime = CURRENT_TIME
+
+    node.suspiciousFlag = FALSE
+
+    // Insert new nodes as RED
+    node.color = "RED"
+
+    // Set child and parent pointers to NIL
+    node.left = ActiveFlows.NIL
+    node.right = ActiveFlows.NIL
+    node.parent = ActiveFlows.NIL
+
+    RETURN node
+
+END FUNCTION

@@ -1,0 +1,13 @@
+FUNCTION UpdateFlow(node, packet)
+
+    // Update traffic counters
+    node.packetCount = node.packetCount + 1
+    node.byteCount = node.byteCount + packet.size
+
+    // Update last activity time
+    node.lastSeenTime = CURRENT_TIME
+
+    // Update duration (for monitoring)
+    node.duration = node.lastSeenTime - node.startTime
+
+END FUNCTION

@@ -1,0 +1,38 @@
+FUNCTION DetectAnomaly(node)
+
+    // Check for possible DoS or high traffic flow
+    IF node.packetCount > 1000 THEN
+        node.suspiciousFlag = TRUE
+        LOG_ALERT("High packet volume detected for flow " + node.flowKey)
+    END IF
+
+    // Check for abnormally large packets
+    avgSize = node.byteCount / node.packetCount
+    IF node.lastPacketSize > (2 * avgSize) THEN
+        node.suspiciousFlag = TRUE
+        LOG_ALERT("Abnormally large packet detected for flow " + node.flowKey)
+    END IF
+
+    // Check for flow durations exceeding expected timeout
+    duration = node.lastSeenTime - node.startTime
+    IF duration > node.timeoutThreshold THEN
+        node.suspiciousFlag = TRUE
+        LOG_ALERT("Flow exceeded timeout threshold: " + node.flowKey)
+    END IF
+
+    // Check for high suspicion score accumulated flows
+    IF node.suspicionScore > 10 THEN
+        node.suspiciousFlag = TRUE
+        LOG_ALERT("Suspicion score exceeded for flow " + node.flowKey)
+    END IF
+
+    // Check for protocol-specific anomalies
+    IF node.protocol = "TCP" AND node.packetCount > 500 AND node.byteCount < (node.packetCount * 60) THEN
+        node.suspiciousFlag = TRUE
+        LOG_ALERT("Possible SYN flood detected for flow " + node.flowKey)
+    END IF
+
+    // Return updated node to update flow table
+    RETURN node
+
+END FUNCTION

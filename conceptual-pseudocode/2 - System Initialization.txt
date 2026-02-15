@@ -1,0 +1,38 @@
+// Structure to represent the RBT
+STRUCT RedBlackTree
+
+	DECLARE root AS FlowNode	// Points to the root of the tree
+	DECLARE NIL AS FlowNode		// Represents all external leaves
+
+END STRUCT
+
+
+// Initializes an empty RBT for managing active network flows
+FUNCTION InitializeFlowTree() RETURNS RedBlackTree
+
+    DECLARE tree AS RedBlackTree
+    DECLARE nilNode AS FlowNode
+
+    // Creating the NIL sentinel node
+    nilNode.flowKey = ""
+    nilNode.packetCount = 0
+    nilNode.byteCount = 0
+    nilNode.startTime = 0
+    nilNode.lastSeenTime = 0
+    nilNode.suspiciousFlag = FALSE
+
+    // Setting all NIL nodes to be BLACK
+    nilNode.color = "BLACK"
+
+    nilNode.left = nilNode
+    nilNode.right = nilNode
+    nilNode.parent = nilNode
+
+    // Initializing tree properties
+    tree.NIL = nilNode
+    tree.root = tree.NIL     
+
+    RETURN tree
+
+END FUNCTION
+
