@@ -1,0 +1,33 @@
+PROCEDURE FlowExpiration(ActiveFlows)
+
+    // Initialize a queue for level-order traversal of RBT
+    DECLARE nodeQueue AS QUEUE
+    ENQUEUE(nodeQueue, ActiveFlows.root)
+
+    // Traverse all active flows
+    WHILE nodeQueue IS NOT EMPTY DO
+        node = DEQUEUE(nodeQueue)
+
+        // Skip NIL sentinel nodes
+        IF node = ActiveFlows.NIL THEN
+            CONTINUE
+        END IF
+
+        // Calculate how long the flow has been inactive
+        inactivity = CURRENT_TIME - node.lastSeenTime
+
+        // Check if the flow has expired due to timeout or already marked expired
+        IF inactivity > node.timeoutThreshold OR node.state = "EXPIRED" THEN
+            // Remove flow from Red-Black Tree
+            RBT_Delete(ActiveFlows, node)
+
+            // Log the expiration event for monitoring
+            LOG_INFO("Flow expired and removed: " + node.flowKey)
+        ELSE
+            // If the flow is still active enqueue children for traversal
+            ENQUEUE(nodeQueue, node.left)
+            ENQUEUE(nodeQueue, node.right)
+        END IF
+    END WHILE
+
+END PROCEDURE

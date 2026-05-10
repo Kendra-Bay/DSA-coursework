@@ -1,0 +1,33 @@
+STRUCT FlowNode
+
+	// Combination of (srcIP, dstIP, srcPort, dstPort, protocol)
+	DECLARE flowKey AS STRING
+
+        // Total number of packets seen for this flow
+	DECLARE packetCount AS INTEGER
+
+        // Total number of bytes transferred
+	DECLARE byteCount AS INTEGER
+
+        // Timestamp when flow was first created (e.g., Unix time)
+	DECLARE startTime AS INTEGER
+
+        // Timestamp of the most recent packet
+	DECLARE lastSeenTime AS INTEGER
+
+        // TRUE if abnormal behavior is detected
+	DECLARE suspiciousFlag AS BOOLEAN
+
+        // "RED" or "BLACK"
+	DECLARE color AS STRING
+
+        // Pointer/reference to left child node
+	DECLARE left AS FlowNode
+
+        // Pointer/reference to right child node
+	DECLARE right AS FlowNode
+
+        // Pointer/reference to parent node
+	DECLARE parent AS FlowNode
+
+END STRUCT

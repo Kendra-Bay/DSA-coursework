@@ -1,0 +1,27 @@
+FUNCTION ProcessPacket(packet)
+
+	// Extract the flow key from packet header
+	flowKey = ExtractFlowKey(packet)
+
+	// Search for the flow inside the RBT
+	node = RBT_Search(ActiveFlows, flowKey)
+
+	// If the flow already exists update the flow
+	IF node != ActiveFlows.NIL THEN
+
+        	UpdateFlow(node, packet)
+
+	ELSE
+
+        	// If flow does not exist create a new flow node
+        	node = CreateNewFlow(flowKey, packet)
+
+        	// Insert the new flow into the RBT
+        	RBT_Insert(ActiveFlows, node)
+
+	END IF
+
+    // Analyze for suspicious activity
+    DetectAnomaly(node)
+
+END FUNCTION

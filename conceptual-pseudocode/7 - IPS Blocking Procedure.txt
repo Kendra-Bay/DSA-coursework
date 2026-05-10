@@ -1,0 +1,26 @@
+PROCEDURE IPS_BlockFlow(node)
+
+    // Check if flow is flagged as suspicious
+    IF node.suspiciousFlag = TRUE THEN
+
+        // Add flow to IPS blocklist for monitoring
+        ADD_TO_BLOCKLIST(node.flowKey)
+
+        // Drop all future packets belonging to blocklisted flow
+        INSTALL_DROP_RULE(node.srcIP, node.destIP, node.srcPort, node.destPort, node.protocol)
+
+        // Log the blocking action for audit and alerts
+        LOG_ALERT("Flow blocked by IPS: " + node.flowKey)
+
+        // Update flow state to reflect blocking
+        node.state = "BLOCKED"
+
+    ELSE
+        // If not suspicious continue normal monitoring
+        LOG_INFO("Flow allowed: " + node.flowKey)
+    END IF
+
+    // Return updated node to update flow table
+    RETURN node
+
+END PROCEDURE
