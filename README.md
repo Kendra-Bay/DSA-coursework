@@ -81,6 +81,7 @@ DSA-coursework/
 │
 ├── public/                      # Static assets served by Vite
 │
+├── screenshots/                 # Dashboard screenshots for README
 ├── src/
 │   ├── algorithms/
 │   │   └── RedBlackTree.js      # Core RBT implementation (insert, search, delete, rebalance)
@@ -102,7 +103,6 @@ DSA-coursework/
 │   ├── index.css
 │   └── main.jsx                 # Vite entry point
 │
-├── screenshots/                 # Dashboard screenshots for README
 ├── .gitignore
 ├── DSA presentation final.pptx  # Slide deck
 ├── README.md
